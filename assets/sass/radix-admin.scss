@@ -1,11 +1,7 @@
 //
 // CSS for Radix Admin
 // --------------------------------------------------
-#admin-menu {
-  display: none;
-}
-
-$menu-background-color: #000000;
+$menu-background-color: #262626;
 $menu-color: #FFFFFF;
 
 $link-background-color: transparent;
@@ -47,11 +43,14 @@ body.radix-admin-menu {
           color: $link-hover-color;
           background-color: $link-hover-background-color;
         }
+        > ul.menu {
+          display: block;
+        }
       }
       > a {
         display: block;
         width: 80px;
-        height: 80px;
+        height: 70px;
         background-color: $link-background-color;
         color: $link-color;
         font-size: 11px;
@@ -83,7 +82,7 @@ body.radix-admin-menu {
         width: 250px;
         > li {
           margin-bottom: 1px;
-          > a {
+          > a, .nolink {
             font-size: 16px;
             color: $link-hover-color;
             padding: 10px 20px;
@@ -93,9 +92,6 @@ body.radix-admin-menu {
               color: $link-hover-background-color;
             }
           }
-          // &.expanded {
-          //   margin: 20px 0;
-          // }
           > ul.menu {
             display: block;
             margin: 0 20px 20px 40px;
@@ -121,5 +117,36 @@ body.radix-admin-menu {
 @media (min-width: 768px) and (max-width: 979px) {
   #radix-admin-menu {
 
+  }
+}
+
+// Phone
+@media (max-width: 767px) {
+  #radix-admin-menu {
+    width: 250px;
+    > ul.menu {
+      > li {
+        > a {
+          width: 100%;
+          height: auto;
+          text-align: left;
+          padding: 10px 0;
+          font-size: 1.2em;
+          line-height: 1.2em;
+          i {
+            display: inline;
+            font-size: 1.5em;
+            height: auto;
+            line-height: 0.8em;
+            margin: 0 10px;
+          }
+        }
+        &.over {
+          ul.menu {
+            display: none;
+          }
+        }
+      }
+    }
   }
 }

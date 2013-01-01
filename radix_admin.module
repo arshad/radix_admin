@@ -10,7 +10,10 @@
  */
 function radix_admin_page_build(&$page) {
   $menu = _radix_admin_get_menu();
-  $page['page_bottom']['radix_admin_menu']['#markup'] = theme('radix_admin_menu', array('menu' => $menu));
+  
+  if (radix_admin_admin_menu_enabled() && sizeof($menu)) {
+    $page['page_bottom']['radix_admin_menu']['#markup'] = theme('radix_admin_menu', array('menu' => $menu));
+  }
 }
 
 /** 
@@ -36,9 +39,16 @@ function radix_admin_preprocess_html(&$variables) {
 
 function _radix_admin_get_menu() {
   $menu_tree = menu_tree_all_data('menu-restaurant-admin-menu');
+
   return menu_tree_output($menu_tree);
 }
 
 function radix_admin_admin_menu_enabled() {
-  return TRUE;
+  $menu = _radix_admin_get_menu();
+  
+  if (sizeof($menu)) {
+    return TRUE;
+  }
+
+  return FALSE;
 }
