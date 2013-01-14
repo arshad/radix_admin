@@ -5,60 +5,58 @@
  * Provides administration enhancements, based on Radix theme
  */
 
-// Menu to be used as the radix admin menu
-define('RADIX_ADMIN_MENU', 'menu-restaurant-admin-menu');
-
 /**
- * Implements hook_page_build().
+ * Implements hook_navbar_view_alter().
  */
-function radix_admin_page_build(&$page) {
-  $menu = _radix_admin_get_menu();
-  
-  if (radix_admin_admin_menu_enabled() && sizeof($menu)) {
-    $page['page_bottom']['radix_admin_menu']['#markup'] = theme('radix_admin_menu', array('menu' => $menu));
-  }
-}
-
-/** 
- * Implements hook_theme().
- */
-function radix_admin_theme() {
-  return array(
-    'radix_admin_menu' => array(
-      'variables' => array('menu' => NULL),
-      'template' => 'templates/radix-admin-menu',
+function radix_admin_navbar_view_alter(&$links) {
+  $icons = array(
+    'navbar_navigation' => array(
+      'home' => 'home',
+      'navbar_tray_toggle' => 'reorder',
+    ),
+    'navbar_user' => array(
+      'account' => 'user',
+      'login' => 'signin',
+      'logout' => 'signout',
     ),
   );
-}
 
-/**
- * Implements hook_preprocess_html().
- */
-function radix_admin_preprocess_html(&$variables) {
-  if (radix_admin_admin_menu_enabled()) {
-    $variables['classes_array'][] = 'radix-admin-menu';
+  $icons['navbar_menu'] = array(
+    'admin/apps' => 'th-large',
+    'admin/content' => 'file',
+    'admin/panopoly' => 'magic',
+    'admin/restaurant' => 'glass',
+    'admin/structure' => 'sitemap',
+    'admin/appearance' => 'eye-open',
+    'admin/people' => 'group',
+    'admin/modules' => 'th-list',
+    'admin/config' => 'cog',
+    'admin/reports' => 'list-alt',
+  );
+
+  foreach (element_children($links) as $name) {
+    if (isset($icons[$name])) {
+
+      if ($name == 'navbar_menu') {
+        foreach (element_children($links[$name]) as $key) {
+          $link = $links[$name][$key];
+          if (isset($icons[$name][$link['#href']])) {
+            $title = '<span>' . $links[$name][$key]['#title'] . '</span>';
+            $icon = '<i class="icon-' . $icons[$name][$link['#href']] . '"></i>';
+            $links[$name][$key]['#title'] = $icon . $title;
+            $links[$name][$key]['#localized_options']['html'] = TRUE;
+          }
+        }
+      } else {
+        foreach ($links[$name]['#links'] as $key => $link) {
+          if (isset($icons[$name][$key])) {
+            $title = '<span>' . $links[$name]['#links'][$key]['title'] . '</span>';
+            $icon = '<i class="icon-' . $icons[$name][$key] . '"></i>';
+            $links[$name]['#links'][$key]['title'] = $icon . $title;
+            $links[$name]['#links'][$key]['html'] = TRUE;
+          }
+        }
+      }
+    }
   }
-}
-
-/**
- * Returns the menu_tree_output for the radix admin menu
- */
-function _radix_admin_get_menu() {
-  $menu_tree = menu_tree_all_data(RADIX_ADMIN_MENU);
-
-  return menu_tree_output($menu_tree);
-}
-
-
-/**
- * Returns TRUE if radix admin menu is enabled
- */
-function radix_admin_admin_menu_enabled() {
-  $menu = _radix_admin_get_menu();
-  
-  if (sizeof($menu)) {
-    return TRUE;
-  }
-
-  return FALSE;
 }
