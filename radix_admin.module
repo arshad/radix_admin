@@ -40,12 +40,11 @@ function radix_admin_navbar_view_alter(&$links) {
       if ($name == 'navbar_menu') {
         foreach (element_children($links[$name]) as $key) {
           $link = $links[$name][$key];
-          if (isset($icons[$name][$link['#href']])) {
-            $title = '<span>' . $links[$name][$key]['#title'] . '</span>';
-            $icon = '<i class="icon-' . $icons[$name][$link['#href']] . '"></i>';
-            $links[$name][$key]['#title'] = $icon . $title;
-            $links[$name][$key]['#localized_options']['html'] = TRUE;
-          }
+          $icon = isset($icons[$name][$link['#href']]) ? $icons[$name][$link['#href']] : 'circle-arrow-right'; // default to ok icon
+          $title = '<span>' . $link['#title'] . '</span>';
+          $icon = '<i class="icon-' . $icon . '"></i>';
+          $links[$name][$key]['#title'] = $icon . $title;
+          $links[$name][$key]['#localized_options']['html'] = TRUE;
         }
       } else {
         foreach ($links[$name]['#links'] as $key => $link) {
