@@ -9,6 +9,8 @@
  * Implements hook_navbar_view_alter().
  */
 function radix_admin_navbar_view_alter(&$links) {
+
+  // provide some default icons to navbar
   $icons = array(
     'navbar_navigation' => array(
       'home' => 'home',
@@ -25,7 +27,6 @@ function radix_admin_navbar_view_alter(&$links) {
     'admin/apps' => 'th-large',
     'admin/content' => 'file',
     'admin/panopoly' => 'magic',
-    'admin/restaurant' => 'glass',
     'admin/structure' => 'sitemap',
     'admin/appearance' => 'eye-open',
     'admin/people' => 'group',
@@ -36,11 +37,10 @@ function radix_admin_navbar_view_alter(&$links) {
 
   foreach (element_children($links) as $name) {
     if (isset($icons[$name])) {
-
       if ($name == 'navbar_menu') {
         foreach (element_children($links[$name]) as $key) {
           $link = $links[$name][$key];
-          $icon = isset($icons[$name][$link['#href']]) ? $icons[$name][$link['#href']] : 'circle-arrow-right'; // default to ok icon
+          $icon = isset($icons[$name][$link['#href']]) ? $icons[$name][$link['#href']] : 'circle-arrow-right'; // default icon
           $title = '<span>' . $link['#title'] . '</span>';
           $icon = '<i class="icon-' . $icon . '"></i>';
           $links[$name][$key]['#title'] = $icon . $title;
