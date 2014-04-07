@@ -1,5 +1,3 @@
 name = Radix Admin
 description = Provides administration enhancements, based on Radix theme
 core = 7.x
-
-dependencies[] = navbar
