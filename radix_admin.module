@@ -15,6 +15,7 @@ function radix_admin_page_build(&$page) {
   $page['page_bottom']['radix_admin'] = array('#attached' => array());
   $attached = &$page['page_bottom']['radix_admin']['#attached'];
   $options = array('every_page' => TRUE);
+  $attached['css'][$path . '/css/font-awesome.min.css'] = $options;
   $attached['css'][$path . '/css/radix_admin.css'] = $options;
 
   // Load javascript.
@@ -72,6 +73,8 @@ function radix_admin_navbar_icons() {
  *
  * @param $menu_item_name
  *  The name of the menu item.
+ * @return string
+ *  The class for the navbar icon.
  */
 function radix_admin_get_navbar_icon($menu_item_name) {
   $icons = _radix_admin_get_navbar_icons();
